@@ -8,7 +8,7 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         body { background: #0b0f19; color: #f8fafc; padding: 15px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 750px; display: flex; flex-direction: column; gap: 15px; }
+        .container { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 15px; }
         .card { background: #161f30; border: 1px solid #23324a; border-radius: 12px; padding: 20px; }
         h1 { font-size: 1.6rem; font-weight: 800; color: #38bdf8; }
         p { color: #94a3b8; font-size: 0.85rem; }
@@ -19,14 +19,16 @@
         .status { margin-top: 8px; font-weight: 600; font-size: 0.8rem; }
         .status.connected { color: #4ade80; }
         .status.disconnected { color: #f87171; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 10px; margin-top: 14px; }
         label { font-size: 0.8rem; color: #94a3b8; font-weight: 600; margin-bottom: 5px; display: block; }
-        select { width: 100%; padding: 10px; border-radius: 6px; background: #0b0f19; color: white; border: 1px solid #334155; outline: none; }
+        select { width: 100%; padding: 10px; border-radius: 6px; background: #0b0f19; color: white; border: 1px solid #334155; outline: none; font-size: 0.85rem; }
         .primary-btn { width: 100%; margin-top: 18px; padding: 13px; background: #22c55e; color: white; font-size: 1rem; border-radius: 8px; font-weight: 700; }
         .loader { text-align: center; padding: 15px; color: #38bdf8; font-weight: 600; display: none; font-size: 0.9rem; }
-        .clip-card { background: #0b0f19; border: 1px solid #23324a; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+        .clip-card { background: #0b0f19; border: 1px solid #23324a; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
         video { width: 100%; max-height: 440px; border-radius: 6px; background: black; }
-        .history-item { background: #0b0f19; border: 1px solid #1e293b; border-radius: 6px; padding: 10px; display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+        .history-item { background: #0b0f19; border: 1px solid #1e293b; border-radius: 6px; padding: 12px; display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+        .badge { background: #0284c7; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; margin-bottom: 4px; display: inline-block; width: fit-content; }
+        .hashtags { color: #38bdf8; font-size: 0.82rem; font-weight: 600; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -34,7 +36,7 @@
 <div class="container">
     <div class="card">
         <h1>ClipForge Studio Pro</h1>
-        <p>Smart Dynamic Speaker Layout • Silence Trimming • Anti-Copyright Safe</p>
+        <p>AI Viral Shorts • Smart Dynamic Speaker • CapCut Styled Captions</p>
         <div class="server-bar">
             <input type="text" id="serverUrl" placeholder="Enter backend URL (https://xxxx.trycloudflare.com)">
             <button onclick="checkConnection()">Connect</button>
@@ -46,9 +48,9 @@
         <label>YouTube Video Link</label>
         <input type="text" id="ytUrl" placeholder="https://www.youtube.com/watch?v=..." style="width:100%;">
 
-        <div class="grid-2">
+        <div class="grid-3">
             <div>
-                <label>Number of Clips</label>
+                <label>Clips Count</label>
                 <select id="clipCount">
                     <option value="1">1 Clip</option>
                     <option value="2">2 Clips</option>
@@ -63,22 +65,35 @@
                 </select>
             </div>
             <div>
-                <label>Target Duration</label>
+                <label>Duration</label>
                 <select id="clipDuration">
-                    <option value="15">15 Seconds (Quick)</option>
-                    <option value="30" selected>30 Seconds (Viral)</option>
-                    <option value="60">60 Seconds (Full Short)</option>
-                    <option value="90">90 Seconds (Long Short)</option>
+                    <option value="15">15s (Quick)</option>
+                    <option value="30" selected>30s (Viral)</option>
+                    <option value="60">60s (Short)</option>
+                    <option value="90">90s (Long)</option>
+                </select>
+            </div>
+            <div>
+                <label>Captions Style</label>
+                <select id="captionStyle">
+                    <option value="hormozi" selected>Hormozi (Yellow/Black)</option>
+                    <option value="capcut_pop">CapCut (Bold Yellow Box)</option>
+                    <option value="mrbeast">MrBeast (Punchy Blue/Red)</option>
+                    <option value="neon">Neon Cyber Green</option>
+                    <option value="tiktok_red">TikTok Viral Red</option>
+                    <option value="glow_pink">Pink Glow Modern</option>
+                    <option value="minimal">Minimal Bold White</option>
+                    <option value="none">None (Clean Video)</option>
                 </select>
             </div>
         </div>
 
         <button class="primary-btn" id="generateBtn" onclick="processVideo()">Generate Viral Clips</button>
-        <div class="loader" id="loader">Processing clips with Smart Trim & Dynamic Layout... (1-2 minutes)</div>
+        <div class="loader" id="loader">Crafting viral clips with custom captions & dynamic cuts... Please wait (1-2 minutes)</div>
     </div>
 
     <div class="card" id="resultsCard" style="display:none;">
-        <h3 style="color:#e2e8f0; font-size:1rem; margin-bottom:10px;">Generated Clips</h3>
+        <h3 style="color:#e2e8f0; font-size:1rem; margin-bottom:10px;">Generated Viral Clips</h3>
         <div id="resultsContainer"></div>
     </div>
 
@@ -130,7 +145,7 @@
 
     function saveToHistory(clip, fullUrl) {
         let history = JSON.parse(localStorage.getItem('clipforge_history') || '[]');
-        history.unshift({ title: clip.title, url: fullUrl, filename: clip.filename, date: new Date().toLocaleDateString() });
+        history.unshift({ title: clip.title, hashtags: clip.hashtags, url: fullUrl, filename: clip.filename, date: new Date().toLocaleDateString() });
         if (history.length > 20) history.pop();
         localStorage.setItem('clipforge_history', JSON.stringify(history));
         renderHistory();
@@ -145,12 +160,13 @@
         }
         container.innerHTML = history.map(item => `
             <div class="history-item">
-                <div>
-                    <div style="font-size:0.85rem; font-weight:600; color:#e2e8f0;">${item.title}</div>
+                <div style="max-width: 75%;">
+                    <div style="font-size:0.85rem; font-weight:700; color:#e2e8f0; margin-bottom:2px;">${item.title}</div>
+                    <div style="font-size:0.75rem; color:#38bdf8; margin-bottom:2px;">${item.hashtags || ''}</div>
                     <div style="font-size:0.7rem; color:#64748b;">${item.date}</div>
                 </div>
                 <a href="${item.url}" download="${item.filename}" target="_blank" style="text-decoration:none;">
-                    <button style="padding:6px 10px; font-size:0.75rem;">Download</button>
+                    <button style="padding:6px 12px; font-size:0.75rem;">Download</button>
                 </a>
             </div>
         `).join('');
@@ -181,6 +197,7 @@
         try {
             const count = parseInt(document.getElementById('clipCount').value);
             const duration = parseInt(document.getElementById('clipDuration').value);
+            const captionStyle = document.getElementById('captionStyle').value;
 
             const ytRes = await fetch(server + '/download-yt', {
                 method: 'POST',
@@ -196,7 +213,8 @@
                 body: JSON.stringify({
                     video_path: videoData.path,
                     video_title: videoData.title,
-                    clips: videoData.clips || []
+                    clips: videoData.clips || [],
+                    caption_style: captionStyle
                 })
             });
             if (!cutRes.ok) throw new Error('Video rendering failed');
@@ -211,11 +229,17 @@
                 const div = document.createElement('div');
                 div.className = 'clip-card';
                 div.innerHTML = `
-                    <h4 style="font-size:0.95rem; color:#38bdf8;">${clip.title}</h4>
+                    <div>
+                        <span class="badge">VIRAL HOOK</span>
+                        <h3 style="font-size:1rem; color:#38bdf8; margin-top:2px;">${clip.title}</h3>
+                    </div>
                     <video controls src="${fullUrl}"></video>
-                    <p style="font-size:0.8rem; color:#94a3b8;">${clip.hashtags}</p>
+                    <div>
+                        <p style="font-size:0.75rem; color:#94a3b8; margin-bottom:2px;">Targeted Hashtags:</p>
+                        <p class="hashtags">${clip.hashtags}</p>
+                    </div>
                     <a href="${fullUrl}" download="${clip.filename}" style="text-decoration:none;">
-                        <button style="width:100%; margin-top:5px;">Download Clip</button>
+                        <button style="width:100%; margin-top:5px;">Download High-Res Clip</button>
                     </a>
                 `;
                 resultsContainer.appendChild(div);

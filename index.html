@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,18 +16,16 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .card-title{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;margin-bottom:14px}
 .step{width:22px;height:22px;border-radius:50%;background:var(--accent-s);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
 .step.done{background:var(--green-s);color:var(--green)}
-input[type=text],input[type=url],textarea{background:var(--bg-panel);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--text);font-size:13px;width:100%;outline:none}
-input:focus,textarea:focus{border-color:var(--accent)}
+input[type=text],input[type=url]{background:var(--bg-panel);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--text);font-size:13px;width:100%;outline:none}
+input:focus{border-color:var(--accent)}
 .tab-row{display:flex;gap:8px;margin-bottom:12px}
 .tab-btn{flex:1;padding:9px;border-radius:6px;background:var(--bg-panel);color:var(--text-2);border:1px solid var(--border);font-weight:600;font-size:12px;cursor:pointer;text-align:center}
 .tab-btn.active{border-color:var(--accent);background:var(--accent-s);color:var(--accent)}
-
 .caption-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
 .cap-card{border:2px solid var(--border);border-radius:8px;padding:10px;cursor:pointer;text-align:center;background:var(--bg-panel);transition:0.18s}
 .cap-card:hover{border-color:rgba(130,90,255,0.4)}
 .cap-card.active{border-color:var(--accent);background:var(--accent-s)}
 .cap-demo{height:42px;display:flex;align-items:center;justify-content:center;font-weight:900;border-radius:4px;margin-bottom:6px;background:#000;letter-spacing:.5px}
-
 .demo-hormozi{color:#ffeb3b;text-shadow:-2px -2px 0 #000, 2px -2px 0 #000;font-size:14px}
 .demo-mrbeast{color:#ff3333;text-shadow:-2px -2px 0 #ffe600, 2px -2px 0 #ffe600;font-size:14px}
 .demo-neon{color:#00ff66;text-shadow:0 0 10px rgba(0,255,102,0.9);font-size:14px}
@@ -35,7 +34,6 @@ input:focus,textarea:focus{border-color:var(--accent)}
 .demo-pink{color:#ff1493;text-shadow:-2px -2px 0 #000;font-size:14px}
 .demo-gold{color:#ffd700;text-shadow:-2px -2px 0 #000;font-size:14px}
 .demo-minimal{color:#fff;font-size:13px}
-
 .btn-big{width:100%;height:48px;border-radius:var(--r);background:linear-gradient(135deg,var(--accent),#a855f7);border:none;color:#fff;font-size:15px;font-weight:700;cursor:pointer}
 .btn-big:disabled{opacity:.4;cursor:not-allowed}
 .clips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:14px}
@@ -49,28 +47,28 @@ input:focus,textarea:focus{border-color:var(--accent)}
 
 <nav>
   <div class="logo">✂ ClipForge <span style="font-size:11px;color:var(--accent)">Auto AI (Whisper)</span></div>
-  <div id="connStatus" style="font-size:12px;color:var(--text-2)">● Not connected</div>
+  <div id="connStatus" style="font-size:12px;color:var(--text-2)">● Checking server...</div>
 </nav>
 
 <div class="main">
-  <!-- 1. BACKEND -->
+  <!-- 1. BACKEND AUTO-SAVED -->
   <div class="card">
-    <div class="card-title"><div class="step" id="step1">1</div> Backend Connection</div>
+    <div class="card-title"><div class="step done" id="step1">✓</div> Backend Server (Auto Connected)</div>
     <div style="display:flex;gap:8px">
-      <input type="url" id="backendUrl" placeholder="https://your-railway-app.up.railway.app" />
-      <button style="padding:0 16px;border-radius:6px;background:var(--accent);color:#fff;border:none;font-weight:600;cursor:pointer" onclick="testConnection()">Connect</button>
+      <input type="url" id="backendUrl" value="https://clipforge-backend-production-e943.up.railway.app" />
+      <button style="padding:0 16px;border-radius:6px;background:var(--accent);color:#fff;border:none;font-weight:600;cursor:pointer" onclick="testConnection()">Reconnect</button>
     </div>
   </div>
 
-  <!-- 2. VIDEO -->
+  <!-- 2. VIDEO SOURCE -->
   <div class="card">
-    <div class="card-title"><div class="step" id="step2">2</div> Video Source (1080p HD)</div>
+    <div class="card-title"><div class="step" id="step2">1</div> Video Source (1080p HD)</div>
     <div class="tab-row">
       <div class="tab-btn active" id="tabYt" onclick="setTab('yt')">YouTube Link (Auto Transcript)</div>
       <div class="tab-btn" id="tabUp" onclick="setTab('up')">Upload Video (Auto Whisper AI)</div>
     </div>
     <div id="ytBox">
-      <input type="url" id="ytUrl" placeholder="Paste YouTube video link here..." />
+      <input type="url" id="ytUrl" placeholder="Paste YouTube link here..." />
       <div style="font-size:11px;color:var(--text-2);margin-top:6px">✨ ٹرانسکرپٹ ڈالنے کی ضرورت نہیں ہے، سسٹم خود آڈیو سے بنا لے گا۔</div>
     </div>
     <div id="upBox" style="display:none">
@@ -80,7 +78,7 @@ input:focus,textarea:focus{border-color:var(--accent)}
 
   <!-- 3. CHOOSE 8 CAPTION STYLES -->
   <div class="card">
-    <div class="card-title"><div class="step">3</div> Choose Caption Style</div>
+    <div class="card-title"><div class="step">2</div> Choose Caption Style</div>
     <div class="caption-grid">
       <div class="cap-card active" onclick="pickCaption(this, 'hormozi')"><div class="cap-demo demo-hormozi">HORMOZI</div><div style="font-size:11px;font-weight:600">Viral Yellow</div></div>
       <div class="cap-card" onclick="pickCaption(this, 'mrbeast')"><div class="cap-demo demo-mrbeast">MR BEAST</div><div style="font-size:11px;font-weight:600">Red & Yellow</div></div>
@@ -117,7 +115,6 @@ function getBackend() {
 
 async function testConnection() {
   const url = getBackend();
-  if(!url) return alert('Enter Backend URL');
   try {
     const r = await fetch(url + '/');
     const d = await r.json();
@@ -127,8 +124,16 @@ async function testConnection() {
       document.getElementById('step1').className = 'step done';
       backendOk = true;
     }
-  } catch(e) { alert('Failed to connect to backend.'); }
+  } catch(e) {
+    document.getElementById('connStatus').textContent = '● Connecting...';
+  }
 }
+
+// ویب سائٹ کھلتے ہی خود بخود کنکشن تلاش کرے گا
+window.addEventListener('DOMContentLoaded', () => {
+  testConnection();
+  setTimeout(testConnection, 2000);
+});
 
 function setTab(tab) {
   currentTab = tab;
@@ -145,7 +150,7 @@ function pickCaption(el, style) {
 }
 
 async function processClips() {
-  if(!backendOk) return alert('Connect backend first.');
+  if(!backendOk) await testConnection();
   const ytUrl = document.getElementById('ytUrl').value.trim();
   const file = document.getElementById('videoFile').files[0];
 
@@ -176,7 +181,7 @@ async function processClips() {
       videoPath = d.path;
     }
 
-    log.textContent = '2/3 Whisper AI is listening to the video audio and transcribing automatically…';
+    log.textContent = '2/3 Whisper AI is listening and cutting clips…';
     const cutRes = await fetch(getBackend() + '/cut', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
@@ -189,7 +194,7 @@ async function processClips() {
       })
     });
     const cutData = await cutRes.json();
-    log.textContent = '3/3 All clips cut with selected captions and ready! ✓';
+    log.textContent = '3/3 Finished! Clips ready below. ✓';
 
     renderClips(cutData.clips);
   } catch(e) {

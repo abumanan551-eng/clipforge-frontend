@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClipForge Pro AI — Auto Whisper</title>
+<title>ClipForge Pro AI — Auto Viral Clips</title>
 <style>
 :root{--bg:#08080f;--bg-card:#111118;--bg-panel:#16161f;--border:rgba(255,255,255,0.08);--text:#ede9ff;--text-2:#9490b8;--accent:#825aff;--accent-s:rgba(130,90,255,0.15);--green:#22c55e;--green-s:rgba(34,197,94,0.12);--r:10px}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -36,24 +35,30 @@ input:focus{border-color:var(--accent)}
 .demo-minimal{color:#fff;font-size:13px}
 .btn-big{width:100%;height:48px;border-radius:var(--r);background:linear-gradient(135deg,var(--accent),#a855f7);border:none;color:#fff;font-size:15px;font-weight:700;cursor:pointer}
 .btn-big:disabled{opacity:.4;cursor:not-allowed}
-.clips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:14px}
-.clip-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+
+/* کلپس اور اسکورنگ کارڈز */
+.clips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:14px}
+.clip-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;position:relative}
+.score-badge{position:absolute;top:10px;right:10px;background:#22c55e;color:#000;font-size:12px;font-weight:900;padding:4px 8px;border-radius:20px;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,0.5)}
 .clip-video{width:100%;aspect-ratio:9/16;object-fit:cover;background:#000;display:block}
-.clip-info{padding:12px}
-.cbtn{display:block;width:100%;padding:8px;border-radius:6px;text-align:center;font-weight:600;text-decoration:none;margin-top:6px;background:var(--green-s);border:1px solid rgba(34,197,94,.3);color:var(--green)}
+.clip-info{padding:14px}
+.clip-title{font-weight:700;font-size:14px;color:#fff;margin-bottom:6px;line-height:1.3}
+.hashtags-box{background:var(--bg-panel);border:1px solid var(--border);padding:6px 10px;border-radius:6px;font-size:11px;color:var(--accent);display:flex;justify-content:space-between;align-items:center;margin:8px 0}
+.copy-tag{cursor:pointer;background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;color:#fff;font-size:10px}
+.cbtn{display:block;width:100%;padding:9px;border-radius:6px;text-align:center;font-weight:700;text-decoration:none;margin-top:8px;background:var(--green);color:#000}
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo">✂ ClipForge <span style="font-size:11px;color:var(--accent)">Auto AI (Whisper)</span></div>
+  <div class="logo">✂ ClipForge <span style="font-size:11px;color:var(--accent)">Opus Pro Style</span></div>
   <div id="connStatus" style="font-size:12px;color:var(--text-2)">● Checking server...</div>
 </nav>
 
 <div class="main">
   <!-- 1. BACKEND AUTO-SAVED -->
   <div class="card">
-    <div class="card-title"><div class="step done" id="step1">✓</div> Backend Server (Auto Connected)</div>
+    <div class="card-title"><div class="step done" id="step1">✓</div> Backend Server</div>
     <div style="display:flex;gap:8px">
       <input type="url" id="backendUrl" value="https://clipforge-backend-production-e943.up.railway.app" />
       <button style="padding:0 16px;border-radius:6px;background:var(--accent);color:#fff;border:none;font-weight:600;cursor:pointer" onclick="testConnection()">Reconnect</button>
@@ -62,14 +67,14 @@ input:focus{border-color:var(--accent)}
 
   <!-- 2. VIDEO SOURCE -->
   <div class="card">
-    <div class="card-title"><div class="step" id="step2">1</div> Video Source (1080p HD)</div>
+    <div class="card-title"><div class="step" id="step2">1</div> Video Source</div>
     <div class="tab-row">
-      <div class="tab-btn active" id="tabYt" onclick="setTab('yt')">YouTube Link (Auto Transcript)</div>
-      <div class="tab-btn" id="tabUp" onclick="setTab('up')">Upload Video (Auto Whisper AI)</div>
+      <div class="tab-btn active" id="tabYt" onclick="setTab('yt')">YouTube Link</div>
+      <div class="tab-btn" id="tabUp" onclick="setTab('up')">Upload Video</div>
     </div>
     <div id="ytBox">
-      <input type="url" id="ytUrl" placeholder="Paste YouTube link here..." />
-      <div style="font-size:11px;color:var(--text-2);margin-top:6px">✨ ٹرانسکرپٹ ڈالنے کی ضرورت نہیں ہے، سسٹم خود آڈیو سے بنا لے گا۔</div>
+      <input type="url" id="ytUrl" placeholder="Paste YouTube video link here..." />
+      <div style="font-size:11px;color:var(--text-2);margin-top:6px">⚡ وائرل اسکور اور ٹرینڈنگ ہیش ٹیگز خودکار جنریٹ ہوں گے۔</div>
     </div>
     <div id="upBox" style="display:none">
       <input type="file" id="videoFile" accept="video/*" />
@@ -91,7 +96,7 @@ input:focus{border-color:var(--accent)}
     </div>
   </div>
 
-  <button class="btn-big" id="runBtn" onclick="processClips()">✦ Auto AI: Listen, Transcribe & Cut Clips</button>
+  <button class="btn-big" id="runBtn" onclick="processClips()">✦ Generate Viral Clips with Score & Hashtags</button>
 
   <div id="logBox" style="display:none" class="card">
     <div class="card-title">AI Processing Status</div>
@@ -99,7 +104,7 @@ input:focus{border-color:var(--accent)}
   </div>
 
   <div id="clipsSection" style="display:none">
-    <div style="font-size:16px;font-weight:700">Finished Clips with Captions</div>
+    <div style="font-size:16px;font-weight:700;margin-bottom:12px">🔥 AI Generated Viral Clips</div>
     <div class="clips-grid" id="clipsGrid"></div>
   </div>
 </div>
@@ -125,11 +130,10 @@ async function testConnection() {
       backendOk = true;
     }
   } catch(e) {
-    document.getElementById('connStatus').textContent = '● Connecting...';
+    document.getElementById('connStatus').textContent = '● Server Starting...';
   }
 }
 
-// ویب سائٹ کھلتے ہی خود بخود کنکشن تلاش کرے گا
 window.addEventListener('DOMContentLoaded', () => {
   testConnection();
   setTimeout(testConnection, 2000);
@@ -149,6 +153,11 @@ function pickCaption(el, style) {
   selectedCaption = style;
 }
 
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text);
+  alert('Hashtags Copied! ✓');
+}
+
 async function processClips() {
   if(!backendOk) await testConnection();
   const ytUrl = document.getElementById('ytUrl').value.trim();
@@ -159,18 +168,20 @@ async function processClips() {
   const log = document.getElementById('logMsg');
 
   let videoPath = '';
+  let clipSegments = [];
   try {
     if (currentTab === 'yt') {
       if(!ytUrl) throw new Error('Enter YouTube URL');
-      log.textContent = '1/3 Downloading 1080p Video & Captions…';
+      log.textContent = '1/3 Downloading Video & Analyzing Viral Highlights…';
       const r = await fetch(getBackend() + '/download-yt', {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify({ url: ytUrl })
       });
       const d = await r.json();
-      if(!r.ok) throw new Error(d.detail || 'YouTube error');
+      if(!r.ok) throw new Error(d.detail || 'Download error');
       videoPath = d.path;
+      clipSegments = d.clips || [];
     } else {
       if(!file) throw new Error('Select a video file');
       log.textContent = '1/3 Uploading file to server…';
@@ -181,20 +192,19 @@ async function processClips() {
       videoPath = d.path;
     }
 
-    log.textContent = '2/3 Whisper AI is listening and cutting clips…';
+    log.textContent = '2/3 Cutting 9:16 Video, Adding Captions & Virality Score…';
     const cutRes = await fetch(getBackend() + '/cut', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
         video_path: videoPath,
-        auto_ai: true,
+        clips: clipSegments,
         caption_style: selectedCaption,
-        aspect_ratio: '9:16',
-        clips_count: 3
+        aspect_ratio: '9:16'
       })
     });
     const cutData = await cutRes.json();
-    log.textContent = '3/3 Finished! Clips ready below. ✓';
+    log.textContent = '3/3 Finished! Clips ready with Title, Score and Hashtags ✓';
 
     renderClips(cutData.clips);
   } catch(e) {
@@ -208,11 +218,16 @@ function renderClips(clips) {
   const backend = getBackend();
   document.getElementById('clipsGrid').innerHTML = clips.map(c => `
     <div class="clip-card">
+      <div class="score-badge">🔥 ${c.score}/100 Score</div>
       <video class="clip-video" src="${backend + c.url}" controls playsinline></video>
       <div class="clip-info">
-        <div style="font-weight:700">${c.title}</div>
-        <div style="font-size:12px;color:var(--text-2);margin-bottom:6px">${c.size_mb} MB</div>
-        <a class="cbtn" href="${backend + c.url}" download="${c.filename}">⬇ Download Clip</a>
+        <div class="clip-title">${c.title}</div>
+        <div class="hashtags-box">
+          <span>${c.hashtags}</span>
+          <span class="copy-tag" onclick="copyToClipboard('${c.hashtags}')">Copy</span>
+        </div>
+        <div style="font-size:11px;color:var(--text-2);margin-bottom:6px">${c.size_mb} MB • 1080x1920 HD</div>
+        <a class="cbtn" href="${backend + c.url}" download="${c.filename}">⬇ Download Video</a>
       </div>
     </div>
   `).join('');

@@ -8,27 +8,24 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         body { background: #0b0f19; color: #f8fafc; padding: 15px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 850px; display: flex; flex-direction: column; gap: 15px; }
-        .card { background: #161f30; border: 1px solid #23324a; border-radius: 12px; padding: 18px; }
+        .container { width: 100%; max-width: 750px; display: flex; flex-direction: column; gap: 15px; }
+        .card { background: #161f30; border: 1px solid #23324a; border-radius: 12px; padding: 20px; }
         h1 { font-size: 1.6rem; font-weight: 800; color: #38bdf8; }
         p { color: #94a3b8; font-size: 0.85rem; }
         .server-bar { display: flex; gap: 8px; margin-top: 12px; }
-        input[type="text"] { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0b0f19; color: white; outline: none; }
-        button { padding: 10px 16px; border-radius: 8px; border: none; background: #38bdf8; color: #0b0f19; font-weight: 700; cursor: pointer; }
+        input[type="text"] { flex: 1; padding: 11px; border-radius: 8px; border: 1px solid #334155; background: #0b0f19; color: white; outline: none; }
+        button { padding: 11px 18px; border-radius: 8px; border: none; background: #38bdf8; color: #0b0f19; font-weight: 700; cursor: pointer; }
         button:hover { opacity: 0.9; }
         .status { margin-top: 8px; font-weight: 600; font-size: 0.8rem; }
         .status.connected { color: #4ade80; }
         .status.disconnected { color: #f87171; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
-        label { font-size: 0.75rem; color: #94a3b8; font-weight: 600; margin-bottom: 4px; display: block; }
-        select { width: 100%; padding: 9px; border-radius: 6px; background: #0b0f19; color: white; border: 1px solid #334155; outline: none; }
-        .box-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; color: #e2e8f0; }
-        .checkbox-group { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
-        .checkbox-item { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #cbd5e1; cursor: pointer; }
-        .primary-btn { width: 100%; margin-top: 15px; padding: 12px; background: #22c55e; color: white; font-size: 1rem; border-radius: 8px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+        label { font-size: 0.8rem; color: #94a3b8; font-weight: 600; margin-bottom: 5px; display: block; }
+        select { width: 100%; padding: 10px; border-radius: 6px; background: #0b0f19; color: white; border: 1px solid #334155; outline: none; }
+        .primary-btn { width: 100%; margin-top: 18px; padding: 13px; background: #22c55e; color: white; font-size: 1rem; border-radius: 8px; font-weight: 700; }
         .loader { text-align: center; padding: 15px; color: #38bdf8; font-weight: 600; display: none; font-size: 0.9rem; }
-        .clip-card { background: #0b0f19; border: 1px solid #23324a; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
-        video { width: 100%; max-height: 400px; border-radius: 6px; background: black; }
+        .clip-card { background: #0b0f19; border: 1px solid #23324a; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+        video { width: 100%; max-height: 440px; border-radius: 6px; background: black; }
         .history-item { background: #0b0f19; border: 1px solid #1e293b; border-radius: 6px; padding: 10px; display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
     </style>
 </head>
@@ -37,7 +34,7 @@
 <div class="container">
     <div class="card">
         <h1>ClipForge Studio Pro</h1>
-        <p>AI Auto Shorts with Speaker Tracking & Anti-Copyright Engine</p>
+        <p>Smart Dynamic Speaker Layout • Silence Trimming • Anti-Copyright Safe</p>
         <div class="server-bar">
             <input type="text" id="serverUrl" placeholder="Enter backend URL (https://xxxx.trycloudflare.com)">
             <button onclick="checkConnection()">Connect</button>
@@ -56,66 +53,38 @@
                     <option value="1">1 Clip</option>
                     <option value="2">2 Clips</option>
                     <option value="3" selected>3 Clips</option>
+                    <option value="4">4 Clips</option>
                     <option value="5">5 Clips</option>
+                    <option value="6">6 Clips</option>
+                    <option value="7">7 Clips</option>
+                    <option value="8">8 Clips</option>
+                    <option value="9">9 Clips</option>
+                    <option value="10">10 Clips</option>
                 </select>
             </div>
             <div>
                 <label>Target Duration</label>
                 <select id="clipDuration">
-                    <option value="15">15 Seconds (Ultra Quick)</option>
-                    <option value="30" selected>30 Seconds (Standard Viral)</option>
+                    <option value="15">15 Seconds (Quick)</option>
+                    <option value="30" selected>30 Seconds (Viral)</option>
                     <option value="60">60 Seconds (Full Short)</option>
+                    <option value="90">90 Seconds (Long Short)</option>
                 </select>
             </div>
         </div>
 
-        <div class="grid-2">
-            <div>
-                <label>Camera & Speaker Layout</label>
-                <select id="speakerLayout">
-                    <option value="smart_crop" selected>AI Active Speaker Tracking</option>
-                    <option value="split_screen">2-Speaker Podcast Split (Top/Bottom)</option>
-                    <option value="center">Center Lock (Standard Crop)</option>
-                </select>
-            </div>
-            <div>
-                <label>Caption Preset</label>
-                <select id="captionStyle">
-                    <option value="hormozi">Alex Hormozi (Yellow/Black)</option>
-                    <option value="mrbeast">MrBeast (Bold Red/Yellow)</option>
-                    <option value="neon">Neon Glow Green</option>
-                    <option value="none">Clean (No Captions)</option>
-                </select>
-            </div>
-        </div>
-
-        <div style="margin-top: 15px; border-top: 1px solid #23324a; padding-top: 10px;">
-            <div class="box-title">Anti-Copyright Protection Suite</div>
-            <div class="checkbox-group">
-                <label class="checkbox-item">
-                    <input type="checkbox" id="antiZoom" checked> Micro-Zoom Frame (1.08x Scaling)
-                </label>
-                <label class="checkbox-item">
-                    <input type="checkbox" id="antiMirror"> Horizontal Flip (Mirror Screen)
-                </label>
-                <label class="checkbox-item">
-                    <input type="checkbox" id="antiPitch" checked> Audio Pitch & Speed Alteration (1.03x Bypass)
-                </label>
-            </div>
-        </div>
-
-        <button class="primary-btn" id="generateBtn" onclick="processVideo()">Generate Clips</button>
-        <div class="loader" id="loader">Processing video clips... Please wait...</div>
+        <button class="primary-btn" id="generateBtn" onclick="processVideo()">Generate Viral Clips</button>
+        <div class="loader" id="loader">Processing clips with Smart Trim & Dynamic Layout... (1-2 minutes)</div>
     </div>
 
     <div class="card" id="resultsCard" style="display:none;">
-        <div class="box-title">Generated Clips</div>
+        <h3 style="color:#e2e8f0; font-size:1rem; margin-bottom:10px;">Generated Clips</h3>
         <div id="resultsContainer"></div>
     </div>
 
     <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div class="box-title" style="margin-bottom:0;">Library / Past Clips</div>
+            <h3 style="color:#e2e8f0; font-size:1rem;">Library / Past Clips</h3>
             <button onclick="clearHistory()" style="background:#ef4444; color:white; padding:4px 8px; font-size:0.75rem;">Clear All</button>
         </div>
         <div id="historyContainer" style="margin-top:10px;">
@@ -162,7 +131,7 @@
     function saveToHistory(clip, fullUrl) {
         let history = JSON.parse(localStorage.getItem('clipforge_history') || '[]');
         history.unshift({ title: clip.title, url: fullUrl, filename: clip.filename, date: new Date().toLocaleDateString() });
-        if (history.length > 15) history.pop();
+        if (history.length > 20) history.pop();
         localStorage.setItem('clipforge_history', JSON.stringify(history));
         renderHistory();
     }
@@ -210,14 +179,13 @@
         resultsContainer.innerHTML = '';
 
         try {
+            const count = parseInt(document.getElementById('clipCount').value);
+            const duration = parseInt(document.getElementById('clipDuration').value);
+
             const ytRes = await fetch(server + '/download-yt', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    url: ytUrl,
-                    count: parseInt(document.getElementById('clipCount').value),
-                    duration: parseInt(document.getElementById('clipDuration').value)
-                })
+                body: JSON.stringify({ url: ytUrl, count: count, duration: duration })
             });
             if (!ytRes.ok) throw new Error('Download failed');
             const videoData = await ytRes.json();
@@ -228,12 +196,7 @@
                 body: JSON.stringify({
                     video_path: videoData.path,
                     video_title: videoData.title,
-                    clips: videoData.clips || [],
-                    caption_style: document.getElementById('captionStyle').value,
-                    layout: document.getElementById('speakerLayout').value,
-                    anti_zoom: document.getElementById('antiZoom').checked,
-                    anti_mirror: document.getElementById('antiMirror').checked,
-                    anti_pitch: document.getElementById('antiPitch').checked
+                    clips: videoData.clips || []
                 })
             });
             if (!cutRes.ok) throw new Error('Video rendering failed');
@@ -248,7 +211,7 @@
                 const div = document.createElement('div');
                 div.className = 'clip-card';
                 div.innerHTML = `
-                    <h3 style="font-size:0.95rem; color:#38bdf8;">${clip.title}</h3>
+                    <h4 style="font-size:0.95rem; color:#38bdf8;">${clip.title}</h4>
                     <video controls src="${fullUrl}"></video>
                     <p style="font-size:0.8rem; color:#94a3b8;">${clip.hashtags}</p>
                     <a href="${fullUrl}" download="${clip.filename}" style="text-decoration:none;">

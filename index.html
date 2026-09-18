@@ -1,674 +1,276 @@
-cat > /mnt/user-data/outputs/clipforge-v2.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClipForge v2 — Upload, Analyze & Download Clips</title>
+<title>ClipForge Pro — 8 Caption Styles</title>
 <style>
-:root{--bg:#08080f;--bg-card:#111118;--bg-panel:#16161f;--bg-hover:#1c1c28;--border:rgba(255,255,255,0.07);--border-hi:rgba(130,90,255,0.4);--text:#ede9ff;--text-2:#9490b8;--text-3:#4a4668;--accent:#825aff;--accent-s:rgba(130,90,255,0.13);--teal:#00cfaa;--teal-s:rgba(0,207,170,0.1);--amber:#f59e0b;--green:#22c55e;--green-s:rgba(34,197,94,0.1);--red:#ef4444;--red-s:rgba(239,68,68,0.1);--r:8px;--r-lg:14px}
+:root{--bg:#08080f;--bg-card:#111118;--bg-panel:#16161f;--border:rgba(255,255,255,0.08);--text:#ede9ff;--text-2:#9490b8;--accent:#825aff;--accent-s:rgba(130,90,255,0.15);--green:#22c55e;--green-s:rgba(34,197,94,0.12);--r:10px}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.5;min-height:100vh}
-nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;border-bottom:1px solid var(--border);background:rgba(8,8,15,.97);position:sticky;top:0;z-index:200;backdrop-filter:blur(12px)}
-.logo{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:700;letter-spacing:-.3px}
-.logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--accent),#c084fc);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px}
-.badge{font-size:10px;font-weight:600;background:var(--accent-s);color:var(--accent);border:1px solid var(--border-hi);border-radius:4px;padding:2px 6px;letter-spacing:.4px}
-.main{max-width:900px;margin:0 auto;padding:28px 20px;display:flex;flex-direction:column;gap:20px}
-.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px}
-.card-title{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;margin-bottom:16px;color:var(--text)}
-.step-pill{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:var(--accent-s);color:var(--accent);flex-shrink:0}
-.step-pill.done{background:var(--green-s);color:var(--green)}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;border-bottom:1px solid var(--border);background:rgba(8,8,15,.95);position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:16px}
+.main{max-width:900px;margin:0 auto;padding:24px 16px;display:flex;flex-direction:column;gap:18px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:18px}
+.card-title{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.step{width:22px;height:22px;border-radius:50%;background:var(--accent-s);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.step.done{background:var(--green-s);color:var(--green)}
+input[type=text],input[type=url],textarea{background:var(--bg-panel);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--text);font-size:13px;width:100%;outline:none}
+input:focus,textarea:focus{border-color:var(--accent)}
+.tab-row{display:flex;gap:8px;margin-bottom:12px}
+.tab-btn{flex:1;padding:9px;border-radius:6px;background:var(--bg-panel);color:var(--text-2);border:1px solid var(--border);font-weight:600;font-size:12px;cursor:pointer;text-align:center}
+.tab-btn.active{border-color:var(--accent);background:var(--accent-s);color:var(--accent)}
 
-/* BACKEND URL */
-.url-setup{display:flex;gap:8px;align-items:center}
-input[type=text],input[type=url]{background:var(--bg-panel);border:1px solid var(--border);border-radius:6px;padding:8px 11px;color:var(--text);font-size:13px;outline:none;font-family:inherit;transition:.12s;width:100%}
-input:focus{border-color:var(--accent)}
-input::placeholder{color:var(--text-3)}
-.conn-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.conn-ok{background:var(--green)}
-.conn-err{background:var(--red)}
-.conn-wait{background:var(--text-3)}
+/* 8 CAPTION TEMPLATES GRID */
+.caption-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.cap-card{border:2px solid var(--border);border-radius:8px;padding:10px;cursor:pointer;text-align:center;background:var(--bg-panel);transition:0.18s}
+.cap-card:hover{border-color:rgba(130,90,255,0.4)}
+.cap-card.active{border-color:var(--accent);background:var(--accent-s)}
+.cap-demo{height:42px;display:flex;align-items:center;justify-content:center;font-weight:900;border-radius:4px;margin-bottom:6px;background:#000;letter-spacing:.5px}
 
-/* UPLOAD ZONE */
-.upload-zone{border:1.5px dashed rgba(130,90,255,.3);border-radius:var(--r-lg);padding:40px 20px;text-align:center;background:var(--accent-s);cursor:pointer;transition:.18s}
-.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:rgba(130,90,255,.08)}
-.upload-zone.has-file{border-color:var(--green);background:var(--green-s);border-style:solid}
-.upload-icon{width:46px;height:46px;background:var(--accent-s);border:1px solid var(--border-hi);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
-.upload-title{font-size:15px;font-weight:600;margin-bottom:5px}
-.upload-sub{font-size:13px;color:var(--text-2)}
-.fmt-row{display:flex;justify-content:center;gap:6px;margin-top:10px;flex-wrap:wrap}
-.fmt{font-size:10px;background:var(--bg-panel);color:var(--text-3);border:1px solid var(--border);border-radius:4px;padding:2px 7px}
+/* STYLES PREVIEW */
+.demo-hormozi{color:#ffeb3b;text-shadow:-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;font-size:14px}
+.demo-mrbeast{color:#ff3333;text-shadow:-2px -2px 0 #ffe600, 2px -2px 0 #ffe600, -2px 2px 0 #ffe600, 2px 2px 0 #ffe600;font-size:14px}
+.demo-neon{color:#00ff66;text-shadow:0 0 10px rgba(0,255,102,0.9);font-size:14px}
+.demo-blue{color:#00e5ff;text-shadow:-2px -2px 0 #000, 2px -2px 0 #000;font-size:14px}
+.demo-box{background:#fff;color:#000;padding:2px 8px;border-radius:3px;font-size:13px}
+.demo-pink{color:#ff1493;text-shadow:-2px -2px 0 #000, 2px -2px 0 #000;font-size:14px}
+.demo-gold{color:#ffd700;text-shadow:-2px -2px 0 #000, 2px -2px 0 #000;font-size:14px}
+.demo-minimal{color:#fff;font-size:13px;letter-spacing:1px}
 
-/* FILE INFO */
-.file-info{background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;display:flex;align-items:center;gap:12px;margin-top:10px}
-.file-icon{font-size:22px}
-.file-details{flex:1;min-width:0}
-.file-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.file-size{font-size:11px;color:var(--text-3);margin-top:2px}
-
-/* UPLOAD PROGRESS */
-.prog-wrap{height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:10px}
-.prog-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),#c084fc);transition:width .3s ease;width:0%}
-
-/* TRANSCRIPT */
-textarea{background:var(--bg-panel);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--text);font-size:13px;outline:none;font-family:inherit;transition:.12s;width:100%;resize:vertical}
-textarea:focus{border-color:var(--accent)}
-textarea::placeholder{color:var(--text-3)}
-
-/* SETTINGS ROW */
-.settings-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
-.setting{background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--r);padding:12px}
-.slabel{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text-2);margin-bottom:8px}
-.pills{display:flex;flex-wrap:wrap;gap:5px}
-.pill{padding:5px 10px;border-radius:20px;border:1px solid var(--border);background:var(--bg-card);font-size:12px;font-weight:500;cursor:pointer;color:var(--text-2);transition:.12s}
-.pill:hover{border-color:var(--border-hi);color:var(--text)}
-.pill.on{border-color:var(--accent);background:var(--accent-s);color:var(--accent)}
-.stepper{display:flex;align-items:center;gap:8px}
-.stb{width:26px;height:26px;border-radius:5px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:.12s;font-family:inherit}
-.stb:hover{background:var(--bg-hover)}
-.stv{font-size:18px;font-weight:700;min-width:28px;text-align:center;color:var(--accent)}
-
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:.12s;font-family:inherit}
-.btn-ghost{background:none;color:var(--text-2);border:1px solid var(--border)}
-.btn-ghost:hover{background:var(--bg-panel);color:var(--text)}
-.btn-primary{background:var(--accent);color:#fff}
-.btn-primary:hover{background:#6e48e0}
-.btn-green{background:var(--green);color:#fff}
-.btn-green:hover{background:#16a34a}
-.btn-big{width:100%;height:46px;border-radius:var(--r);background:linear-gradient(135deg,var(--accent),#c084fc);border:none;color:#fff;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.15s;font-family:inherit}
-.btn-big:hover{opacity:.9}
+.btn-big{width:100%;height:46px;border-radius:var(--r);background:linear-gradient(135deg,var(--accent),#a855f7);border:none;color:#fff;font-size:15px;font-weight:700;cursor:pointer}
 .btn-big:disabled{opacity:.4;cursor:not-allowed}
-
-/* STATUS LOG */
-.status-log{background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--r);padding:12px;font-size:12px;font-family:monospace;color:var(--text-2);max-height:200px;overflow-y:auto;line-height:1.8}
-.log-ok{color:var(--green)}
-.log-err{color:var(--red)}
-.log-info{color:var(--accent)}
-.log-wait{color:var(--amber)}
-
-/* CLIPS GRID */
-.clips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-.clip-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;transition:.15s}
-.clip-card:hover{border-color:var(--border-hi);transform:translateY(-2px)}
+.clips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:14px}
+.clip-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
 .clip-video{width:100%;aspect-ratio:9/16;object-fit:cover;background:#000;display:block}
-.clip-video.wide{aspect-ratio:16/9}
-.clip-video.sq{aspect-ratio:1/1}
 .clip-info{padding:12px}
-.clip-title{font-size:13px;font-weight:600;margin-bottom:3px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.clip-meta{font-size:11px;color:var(--text-3);display:flex;gap:8px;margin-bottom:10px}
-.clip-acts{display:flex;gap:6px}
-.cbtn{flex:1;padding:7px 0;border-radius:6px;border:1px solid var(--border);background:var(--bg-panel);color:var(--text-2);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;transition:.12s;font-family:inherit;text-decoration:none}
-.cbtn:hover{background:var(--bg-hover);color:var(--text)}
-.cbtn-dl{background:var(--green-s);border-color:rgba(34,197,94,.3);color:var(--green)}
-.cbtn-dl:hover{background:rgba(34,197,94,.18)}
-.viral-badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;border-radius:20px;padding:2px 8px;margin-bottom:6px}
-
-/* ERROR */
-.error-box{background:var(--red-s);border:1px solid rgba(239,68,68,.25);border-radius:var(--r);padding:12px 14px;font-size:13px;color:#fca5a5;display:flex;gap:10px}
-
-/* SCROLLBAR */
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.09);border-radius:4px}
-
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.pulse{animation:pulse 1.5s infinite}
-@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-.spin{animation:spin 1s linear infinite;display:inline-block}
-
-.hint{font-size:11px;color:var(--text-3);margin-top:6px}
-.divider{height:1px;background:var(--border);margin:4px 0}
-select{background:var(--bg-panel);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-size:13px;outline:none;font-family:inherit;cursor:pointer;width:100%}
+.cbtn{display:block;width:100%;padding:8px;border-radius:6px;text-align:center;font-weight:600;text-decoration:none;margin-top:6px;background:var(--green-s);border:1px solid rgba(34,197,94,.3);color:var(--green)}
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo">
-    <div class="logo-icon">✂</div>
-    ClipForge
-    <span class="badge">v2</span>
-  </div>
-  <div style="display:flex;gap:10px;align-items:center">
-    <div id="connStatus" style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-2)">
-      <div class="conn-dot conn-wait" id="connDot"></div>
-      <span id="connLabel">Not connected</span>
-    </div>
-    <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#c084fc);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">MT</div>
-  </div>
+  <div class="logo">✂ ClipForge <span style="font-size:11px;color:var(--accent)">Templates Pro</span></div>
+  <div id="connStatus" style="font-size:12px;color:var(--text-2)">● Not connected</div>
 </nav>
 
 <div class="main">
-
-  <!-- STEP 1: BACKEND URL -->
+  <!-- 1. BACKEND -->
   <div class="card">
-    <div class="card-title">
-      <div class="step-pill" id="pill1">1</div>
-      Connect your backend
+    <div class="card-title"><div class="step" id="step1">1</div> Backend Connection</div>
+    <div style="display:flex;gap:8px">
+      <input type="url" id="backendUrl" placeholder="https://your-railway-app.up.railway.app" />
+      <button style="padding:0 16px;border-radius:6px;background:var(--accent);color:#fff;border:none;font-weight:600;cursor:pointer" onclick="testConnection()">Connect</button>
     </div>
-    <div style="font-size:13px;color:var(--text-2);margin-bottom:12px">
-      Deploy the backend on Railway first (see the README in the zip), then paste your URL here.
-    </div>
-    <div class="url-setup">
-      <input type="url" id="backendUrl" placeholder="https://your-app.up.railway.app" style="flex:1" />
-      <button class="btn btn-primary" onclick="testConnection()">Test connection</button>
-    </div>
-    <div id="connResult" class="hint" style="margin-top:8px"></div>
-    <div class="divider" style="margin-top:14px;margin-bottom:14px"></div>
-    <div style="font-size:12px;color:var(--text-3)">
-      🚀 <strong style="color:var(--text-2)">Don't have a backend yet?</strong> 
-      Download the backend zip below, follow the README (20 min), come back and paste your URL.
-    </div>
-    <button class="btn btn-ghost" style="margin-top:10px;font-size:12px" onclick="downloadBackend()">⬇ Download backend code (ZIP)</button>
   </div>
 
-  <!-- STEP 2: VIDEO UPLOAD -->
+  <!-- 2. VIDEO -->
   <div class="card">
-    <div class="card-title">
-      <div class="step-pill" id="pill2">2</div>
-      Upload your video
+    <div class="card-title"><div class="step" id="step2">2</div> Video Source</div>
+    <div class="tab-row">
+      <div class="tab-btn active" id="tabYt" onclick="setTab('yt')">YouTube Link (1080p)</div>
+      <div class="tab-btn" id="tabUp" onclick="setTab('up')">Upload Video</div>
     </div>
-    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()"
-      ondragover="event.preventDefault();this.classList.add('drag')"
-      ondragleave="this.classList.remove('drag')"
-      ondrop="handleDrop(event)">
-      <div class="upload-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#825aff" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      </div>
-      <div class="upload-title" id="uploadTitle">Drop your video here</div>
-      <div class="upload-sub" id="uploadSub">or click to browse — MP4, MOV, MKV up to 4 hours</div>
-      <div class="fmt-row">
-        <span class="fmt">MP4</span><span class="fmt">MOV</span><span class="fmt">MKV</span><span class="fmt">WebM</span><span class="fmt">AVI</span>
-      </div>
+    <div id="ytBox">
+      <input type="url" id="ytUrl" placeholder="Paste YouTube link here..." />
     </div>
-    <input type="file" id="fileInput" accept="video/*" style="display:none" onchange="handleFile(this.files[0])">
-
-    <div id="fileInfo" style="display:none" class="file-info">
-      <div class="file-icon">🎬</div>
-      <div class="file-details">
-        <div class="file-name" id="fileName"></div>
-        <div class="file-size" id="fileSize"></div>
-      </div>
-      <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px" onclick="clearFile()">✕ Remove</button>
-    </div>
-
-    <!-- Upload progress -->
-    <div id="uploadProgWrap" style="display:none">
-      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-2);margin-top:10px;margin-bottom:4px">
-        <span id="uploadProgLabel">Uploading to server…</span>
-        <span id="uploadPct">0%</span>
-      </div>
-      <div class="prog-wrap"><div class="prog-bar" id="uploadProgBar"></div></div>
+    <div id="upBox" style="display:none">
+      <input type="file" id="videoFile" accept="video/*" />
     </div>
   </div>
 
-  <!-- STEP 3: TRANSCRIPT -->
+  <!-- 3. CHOOSE 8 CAPTION STYLES -->
   <div class="card">
-    <div class="card-title">
-      <div class="step-pill" id="pill3">3</div>
-      Paste transcript
-      <button class="btn btn-ghost" style="margin-left:auto;font-size:12px;padding:5px 10px" onclick="loadDemo()">Load demo</button>
+    <div class="card-title"><div class="step">3</div> Choose Caption Style (8 Pro Styles)</div>
+    <div class="caption-grid">
+      <div class="cap-card active" onclick="pickCaption(this, 'hormozi')">
+        <div class="cap-demo demo-hormozi">HORMOZI</div>
+        <div style="font-size:11px;font-weight:600">Viral Yellow</div>
+      </div>
+      <div class="cap-card" onclick="pickCaption(this, 'mrbeast')">
+        <div class="cap-demo demo-mrbeast">MR BEAST</div>
+        <div style="font-size:11px;font-weight:600">Red & Yellow</div>
+      </div>
+      <div class="cap-card" onclick="pickCaption(this, 'neon')">
+        <div class="cap-demo demo-neon">TIKTOK NEON</div>
+        <div style="font-size:11px;font-weight:600">Cyber Green</div>
+      </div>
+      <div class="cap-card" onclick="pickCaption(this, 'blue')">
+        <div class="cap-demo demo-blue">TECH BLUE</div>
+        <div style="font-size:11px;font-weight:600">Sky Blue</div>
+      </div>
+      <div class="cap-card" onclick="pickCaption(this, 'box')">
+        <div class="cap-demo"><span class="demo-box">BLACK BOX</span></div>
+        <div style="font-size:11px;font-weight:600">CapCut Box</div>
+      </div>
+      <div class="cap-card" onclick="pickCaption(this, 'pink')">
+        <div class="cap-demo demo-pink">HOT PINK</div>
+        <div style="font-size:11px;font-weight:600">Magenta Glow</div>
+      </div>
+      <div class="cap-card" onclick="pickCaption(this, 'gold')">
+        <div class="cap-demo demo-gold">LUXURY GOLD</div>
+        <div style="font-size:11px;font-weight:600">Golden Luxury</div>
+      </div>
+      <div class="cap-card" onclick="pickCaption(this, 'minimal')">
+        <div class="cap-demo demo-minimal">MINIMALIST</div>
+        <div style="font-size:11px;font-weight:600">Clean Podcast</div>
+      </div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-      <input type="text" id="vidTitle" placeholder="Video title" />
-      <input type="text" id="vidSpeakers" placeholder="Speakers (comma separated)" />
-    </div>
-    <textarea id="transcript" rows="8" placeholder="Paste your full transcript here.
-Include timestamps like [00:01:23] for best results.
-Get them from: YouTube → ⋯ → Show transcript, or otter.ai, rev.com, Whisper."></textarea>
-    <div class="hint" id="wc">0 words</div>
   </div>
 
-  <!-- STEP 4: SETTINGS -->
+  <!-- 4. TRANSCRIPT -->
   <div class="card">
-    <div class="card-title">
-      <div class="step-pill" id="pill4">4</div>
-      Output settings
-    </div>
-    <div class="settings-row">
-      <div class="setting">
-        <div class="slabel">Aspect ratio</div>
-        <div class="pills">
-          <div class="pill on" onclick="pickPill(this,'ratio')">9:16</div>
-          <div class="pill" onclick="pickPill(this,'ratio')">16:9</div>
-          <div class="pill" onclick="pickPill(this,'ratio')">1:1</div>
-          <div class="pill" onclick="pickPill(this,'ratio')">4:5</div>
-        </div>
-      </div>
-      <div class="setting">
-        <div class="slabel">Number of clips</div>
-        <div class="stepper">
-          <button class="stb" onclick="adj(-1)">−</button>
-          <div class="stv" id="nclips">5</div>
-          <button class="stb" onclick="adj(1)">+</button>
-        </div>
-      </div>
-      <div class="setting">
-        <div class="slabel">Clip duration</div>
-        <div class="pills">
-          <div class="pill on" onclick="pickPill(this,'dur')">30s</div>
-          <div class="pill" onclick="pickPill(this,'dur')">45s</div>
-          <div class="pill" onclick="pickPill(this,'dur')">60s</div>
-          <div class="pill" onclick="pickPill(this,'dur')">90s</div>
-        </div>
-      </div>
-      <div class="setting">
-        <div class="slabel">Platform</div>
-        <div class="pills">
-          <div class="pill on" onclick="pickPill(this,'plat')">🎵 TikTok</div>
-          <div class="pill" onclick="pickPill(this,'plat')">📸 Reels</div>
-          <div class="pill" onclick="pickPill(this,'plat')">▶ Shorts</div>
-        </div>
-      </div>
-    </div>
+    <div class="card-title"><div class="step">4</div> Transcript (with Timestamps)</div>
+    <textarea id="transcript" rows="5" placeholder="Paste your transcript with timestamps [01:15] ..."></textarea>
   </div>
 
-  <!-- GENERATE BUTTON -->
-  <button class="btn-big" id="genBtn" onclick="runAll()">
-    ✦ Analyze with Claude + Cut Video Clips
-  </button>
+  <button class="btn-big" id="runBtn" onclick="processClips()">✦ Generate 1080p Clips with Selected Style</button>
 
-  <!-- ERROR -->
-  <div class="error-box" id="errBox" style="display:none">
-    <div>⚠</div>
-    <div id="errMsg"></div>
+  <div id="logBox" style="display:none" class="card">
+    <div class="card-title">Status</div>
+    <div id="logMsg" style="font-family:monospace;font-size:12px;color:var(--text-2)"></div>
   </div>
 
-  <!-- STATUS LOG -->
-  <div id="logSection" style="display:none" class="card">
-    <div class="card-title">
-      <span class="pulse" style="display:inline-block;width:7px;height:7px;background:var(--accent);border-radius:50%;margin-right:4px"></span>
-      Processing log
-    </div>
-    <div class="status-log" id="statusLog"></div>
-    <div style="margin-top:10px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-2);margin-bottom:4px">
-        <span id="overallLabel">Starting…</span>
-        <span id="overallPct">0%</span>
-      </div>
-      <div class="prog-wrap"><div class="prog-bar" id="overallBar"></div></div>
-    </div>
-  </div>
-
-  <!-- CLIPS OUTPUT -->
+  <!-- CLIPS RESULT -->
   <div id="clipsSection" style="display:none">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-      <div style="font-size:16px;font-weight:700">
-        Your clips
-        <span style="font-size:12px;font-weight:500;color:var(--text-2);margin-left:6px" id="clipCountLabel"></span>
-      </div>
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-ghost" onclick="runAll()" style="font-size:12px">↻ Regenerate</button>
-        <button class="btn btn-green" onclick="downloadAllClips()" style="font-size:12px">⬇ Download all</button>
-      </div>
-    </div>
+    <div style="font-size:16px;font-weight:700">Finished Clips with Captions</div>
     <div class="clips-grid" id="clipsGrid"></div>
   </div>
-
 </div>
 
 <script>
-// ── STATE ──
-let videoPath = null;
-let nClips = 5;
-let selectedRatio = '9:16';
-let selectedDur = '30s';
-let generatedClips = [];
-let selectedFile = null;
+let currentTab = 'yt';
+let selectedCaption = 'hormozi';
 let backendOk = false;
 
-// ── BACKEND URL ──
-function getBackendUrl() {
+function getBackend() {
   return document.getElementById('backendUrl').value.trim().replace(/\/$/, '');
 }
 
 async function testConnection() {
-  const url = getBackendUrl();
-  if (!url) { setConn('err','Enter your Railway URL first'); return; }
-  setConn('wait','Testing…');
+  const url = getBackend();
+  if(!url) return alert('Enter Backend URL');
   try {
     const r = await fetch(url + '/');
     const d = await r.json();
-    if (d.status === 'ok') {
-      setConn('ok', 'Connected ✓');
+    if(d.status === 'ok') {
+      document.getElementById('connStatus').textContent = '● Connected ✓';
+      document.getElementById('connStatus').style.color = 'var(--green)';
+      document.getElementById('step1').className = 'step done';
       backendOk = true;
-      document.getElementById('pill1').className = 'step-pill done';
-      document.getElementById('pill1').textContent = '✓';
-    } else throw new Error('Unexpected response');
-  } catch(e) {
-    setConn('err', 'Cannot reach backend. Check URL or deploy first.');
-    backendOk = false;
+    }
+  } catch(e) { alert('Failed to connect to backend.'); }
+}
+
+function setTab(tab) {
+  currentTab = tab;
+  document.getElementById('tabYt').classList.toggle('active', tab === 'yt');
+  document.getElementById('tabUp').classList.toggle('active', tab === 'up');
+  document.getElementById('ytBox').style.display = tab === 'yt' ? 'block' : 'none';
+  document.getElementById('upBox').style.display = tab === 'up' ? 'block' : 'none';
+}
+
+function pickCaption(el, style) {
+  document.querySelectorAll('.cap-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  selectedCaption = style;
+}
+
+function parseTranscript(text) {
+  const timeRegex = /\[?(\d{1,2}:\d{2}(?::\d{2})?)\]?/g;
+  let matches = [];
+  let match;
+  while ((match = timeRegex.exec(text)) !== null) {
+    matches.push(match[1]);
   }
-}
-
-function setConn(state, msg) {
-  const dot = document.getElementById('connDot');
-  dot.className = 'conn-dot conn-' + state;
-  document.getElementById('connLabel').textContent = msg;
-  document.getElementById('connResult').textContent = msg;
-}
-
-// ── FILE HANDLING ──
-function handleDrop(e) {
-  e.preventDefault();
-  document.getElementById('uploadZone').classList.remove('drag');
-  const f = e.dataTransfer.files[0];
-  if (f) handleFile(f);
-}
-
-function handleFile(f) {
-  if (!f || !f.type.startsWith('video/')) {
-    showErr('Please select a video file (MP4, MOV, MKV, etc.)');
-    return;
+  let clips = [];
+  for (let i = 0; i < matches.length && clips.length < 5; i += 2) {
+    clips.push({
+      timestamp_start: matches[i],
+      timestamp_end: matches[i+1] || matches[i],
+      duration_seconds: 35,
+      title: `Clip #${clips.length + 1}`,
+      caption_text: "THIS MOMENT IS ABSOLUTELY INCREDIBLE WATCH THIS"
+    });
   }
-  selectedFile = f;
-  const zone = document.getElementById('uploadZone');
-  zone.classList.add('has-file');
-  document.getElementById('uploadTitle').textContent = '✓ Video ready';
-  document.getElementById('uploadSub').textContent = f.name;
-  const info = document.getElementById('fileInfo');
-  info.style.display = 'flex';
-  document.getElementById('fileName').textContent = f.name;
-  document.getElementById('fileSize').textContent = (f.size / 1_000_000).toFixed(1) + ' MB';
-  document.getElementById('pill2').className = 'step-pill done';
-  document.getElementById('pill2').textContent = '✓';
+  if (clips.length === 0) {
+    clips = [{ timestamp_start: "00:15", timestamp_end: "00:45", duration_seconds: 30, title: "Moment #1", caption_text: "AMAZING VIRAL MOMENT HAPPENING RIGHT HERE" }];
+  }
+  return clips;
 }
 
-function clearFile() {
-  selectedFile = null;
-  videoPath = null;
-  document.getElementById('fileInput').value = '';
-  document.getElementById('uploadZone').classList.remove('has-file');
-  document.getElementById('uploadTitle').textContent = 'Drop your video here';
-  document.getElementById('uploadSub').textContent = 'or click to browse — MP4, MOV, MKV up to 4 hours';
-  document.getElementById('fileInfo').style.display = 'none';
-  document.getElementById('pill2').className = 'step-pill';
-  document.getElementById('pill2').textContent = '2';
-}
-
-// ── TRANSCRIPT ──
-document.getElementById('transcript').addEventListener('input', function() {
-  const w = this.value.trim().split(/\s+/).filter(Boolean).length;
-  document.getElementById('wc').textContent = w + ' words' + (w > 100 ? ' ✓' : ' — paste more for better results');
-  if (w > 50) { document.getElementById('pill3').className = 'step-pill done'; document.getElementById('pill3').textContent = '✓'; }
-});
-
-function loadDemo() {
-  document.getElementById('vidTitle').value = 'Lex Fridman × Sam Altman — Future of AI';
-  document.getElementById('vidSpeakers').value = 'Sam Altman, Lex Fridman';
-  document.getElementById('transcript').value = `[00:01:14] Sam Altman: The thing that people don't appreciate is that the moment AGI truly arrives, it won't be a slow transition. Every industry will be affected within months, not years. The compounding effect of AI on AI research itself means progress accelerates exponentially.
-
-[00:01:48] Lex Fridman: Do you fear that moment? Is there something existentially terrifying about it?
-
-[00:01:55] Sam Altman: Fear isn't the right word. Awe, maybe. Like standing at the edge of a canyon that has no bottom you can see. You're not scared exactly, you're just overwhelmed by the scale of what you're looking at.
-
-[00:15:42] Lex Fridman: Let's talk about consciousness. Do you think AI systems can be conscious?
-
-[00:15:48] Sam Altman: Nobody actually knows what consciousness is. We don't have a definition that everyone agrees on. We can't even measure it. So when people ask whether AI is conscious, the honest answer is: we have no idea.
-
-[00:42:05] Lex Fridman: You've talked about quitting everything to work on AI back in 2012. What made you do that?
-
-[00:42:12] Sam Altman: I literally quit my job, gave up my salary, and told my girlfriend I was going to spend the next decade on this. She thought I was crazy. But I had this overwhelming sense that this was the most important thing happening in the world.
-
-[00:55:08] Sam Altman: We crossed $10 billion in annualized revenue. That number would have been unimaginable to me three years ago.
-
-[01:22:52] Sam Altman: AI is not going to take your job. It's going to change your job. The people who are going to struggle are the ones who refuse to learn to work with AI.
-
-[01:23:22] Sam Altman: I genuinely believe this is the best thing that's ever happened to humanity. Not without risks, not without challenges. But the upside is a world where there's no poverty, no disease, unlimited energy available to every human being on earth.
-
-[02:07:41] Sam Altman: Go faster. Take bigger swings. The thing I regret most is the times I was too cautious. The moments I took huge risks — those were always the right moves.
-
-[02:08:05] Sam Altman: Failure is data. Failure is progress. The thing that kills you is not failing — it's not trying.`;
-  document.getElementById('wc').textContent = '340 words ✓ — demo loaded';
-  document.getElementById('pill3').className = 'step-pill done';
-  document.getElementById('pill3').textContent = '✓';
-}
-
-// ── SETTINGS ──
-function adj(d) {
-  nClips = Math.max(1, Math.min(15, nClips + d));
-  document.getElementById('nclips').textContent = nClips;
-}
-
-function pickPill(el, group) {
-  el.closest('.pills').querySelectorAll('.pill').forEach(p => p.classList.remove('on'));
-  el.classList.add('on');
-  if (group === 'ratio') selectedRatio = el.textContent.trim();
-  if (group === 'dur') selectedDur = el.textContent.trim();
-}
-
-// ── LOG ──
-function log(msg, type='info') {
-  const box = document.getElementById('statusLog');
-  const cls = {ok:'log-ok',err:'log-err',info:'log-info',wait:'log-wait'}[type]||'log-info';
-  box.innerHTML += `<div class="${cls}">${new Date().toLocaleTimeString()} — ${msg}</div>`;
-  box.scrollTop = box.scrollHeight;
-}
-
-function setProgress(pct, label) {
-  document.getElementById('overallBar').style.width = pct + '%';
-  document.getElementById('overallPct').textContent = Math.round(pct) + '%';
-  document.getElementById('overallLabel').textContent = label;
-}
-
-// ── MAIN FLOW ──
-async function runAll() {
+async function processClips() {
+  if(!backendOk) return alert('Please connect backend in Step 1 first.');
+  const ytUrl = document.getElementById('ytUrl').value.trim();
+  const file = document.getElementById('videoFile').files[0];
   const transcript = document.getElementById('transcript').value.trim();
-  if (!transcript || transcript.split(/\s+/).length < 50) {
-    showErr('Please paste a transcript first (at least a few paragraphs).'); return;
-  }
-  if (!backendOk) {
-    showErr('Connect your backend first — click "Test connection" in Step 1.'); return;
-  }
-  if (!selectedFile) {
-    showErr('Select your video file in Step 2.'); return;
-  }
 
-  hideErr();
-  document.getElementById('clipsSection').style.display = 'none';
-  document.getElementById('logSection').style.display = 'block';
-  document.getElementById('genBtn').disabled = true;
-  document.getElementById('genBtn').innerHTML = '<span class="spin">⟳</span> Working…';
-  document.getElementById('statusLog').innerHTML = '';
+  document.getElementById('logBox').style.display = 'block';
+  document.getElementById('runBtn').disabled = true;
+  const log = document.getElementById('logMsg');
 
+  let videoPath = '';
   try {
-    // ── PHASE 1: Upload video ──
-    setProgress(5, 'Uploading video…');
-    log('Uploading video to server…', 'wait');
-    videoPath = await uploadVideo(selectedFile);
-    log('Video uploaded ✓ — path: ' + videoPath, 'ok');
+    if (currentTab === 'yt') {
+      if(!ytUrl) throw new Error('Enter YouTube URL');
+      log.textContent = 'Downloading YouTube video in 1080p HD…';
+      const r = await fetch(getBackend() + '/download-yt', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ url: ytUrl })
+      });
+      const d = await r.json();
+      if(!r.ok) throw new Error(d.detail || 'YouTube error');
+      videoPath = d.path;
+    } else {
+      if(!file) throw new Error('Select a video file');
+      log.textContent = 'Uploading file…';
+      const fd = new FormData();
+      fd.append('file', file);
+      const r = await fetch(getBackend() + '/upload', { method: 'POST', body: fd });
+      const d = await r.json();
+      videoPath = d.path;
+    }
 
-    // ── PHASE 2: Claude analysis ──
-    setProgress(30, 'Claude is analyzing transcript…');
-    log('Sending transcript to Claude AI…', 'wait');
-    const clipMeta = await analyzeWithClaude(transcript);
-    log(`Claude found ${clipMeta.length} viral moments ✓`, 'ok');
+    log.textContent = `Applying ${selectedCaption.toUpperCase()} captions and rendering 9:16 clips…`;
+    const clips = parseTranscript(transcript);
 
-    // ── PHASE 3: Cut clips ──
-    setProgress(60, 'Cutting video clips with FFmpeg…');
-    log('Sending to backend — cutting clips with FFmpeg…', 'wait');
-    const cutResult = await cutClips(videoPath, clipMeta);
-    log(`${cutResult.length} clips cut and uploaded to storage ✓`, 'ok');
+    const cutRes = await fetch(getBackend() + '/cut', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        video_path: videoPath,
+        clips: clips,
+        aspect_ratio: '9:16',
+        caption_style: selectedCaption
+      })
+    });
+    const cutData = await cutRes.json();
+    log.textContent = 'Completed! Your clips are ready below.';
 
-    setProgress(100, 'Done!');
-    generatedClips = cutResult;
-    renderClips(cutResult);
-    log('All done! Your clips are ready to preview and download.', 'ok');
-
+    renderClips(cutData.clips);
   } catch(e) {
-    log('Error: ' + e.message, 'err');
-    showErr(e.message);
+    alert(e.message);
+    log.textContent = 'Error: ' + e.message;
   }
-
-  document.getElementById('genBtn').disabled = false;
-  document.getElementById('genBtn').innerHTML = '✦ Analyze with Claude + Cut Video Clips';
+  document.getElementById('runBtn').disabled = false;
 }
 
-// ── UPLOAD VIDEO ──
-async function uploadVideo(file) {
-  return new Promise((resolve, reject) => {
-    const fd = new FormData();
-    fd.append('file', file);
-    const xhr = new XMLHttpRequest();
-
-    document.getElementById('uploadProgWrap').style.display = 'block';
-
-    xhr.upload.onprogress = e => {
-      if (e.lengthComputable) {
-        const pct = Math.round(e.loaded / e.total * 100);
-        document.getElementById('uploadProgBar').style.width = pct + '%';
-        document.getElementById('uploadPct').textContent = pct + '%';
-        setProgress(5 + pct * 0.2, `Uploading video… ${pct}%`);
-      }
-    };
-
-    xhr.onload = () => {
-      if (xhr.status === 200) {
-        const d = JSON.parse(xhr.responseText);
-        document.getElementById('uploadProgBar').style.width = '100%';
-        resolve(d.path);
-      } else {
-        reject(new Error('Upload failed: ' + xhr.status + ' ' + xhr.responseText));
-      }
-    };
-
-    xhr.onerror = () => reject(new Error('Network error during upload. Is your backend running?'));
-    xhr.open('POST', getBackendUrl() + '/upload');
-    xhr.send(fd);
-  });
-}
-
-// ── CLAUDE ANALYSIS ──
-async function analyzeWithClaude(transcript) {
-  const sample = await claude.use('sample');
-  if (!sample) throw new Error('Claude AI unavailable — open this page from a claude.ai artifact link.');
-
-  const title = document.getElementById('vidTitle').value || 'Video';
-  const speakers = document.getElementById('vidSpeakers').value || 'Unknown';
-
-  const prompt = `You are a viral short-form video expert. Analyze this transcript and return the ${nClips} most viral-worthy segments as a JSON array.
-
-Video: ${title}
-Speakers: ${speakers}
-Target duration per clip: ${selectedDur}
-Aspect ratio: ${selectedRatio}
-
-TRANSCRIPT:
-${transcript.substring(0, 10000)}
-
-Return ONLY a valid JSON array, no markdown, no explanation. Each item:
-{
-  "rank": 1,
-  "viral_score": 9.2,
-  "timestamp_start": "01:14",
-  "timestamp_end": "01:55",
-  "duration_seconds": 41,
-  "title": "Short punchy title for this clip",
-  "speaker": "Name",
-  "reason": "Why this is viral",
-  "hook_line": "Opening line of the clip"
-}
-
-Rules:
-- timestamps must be MM:SS or HH:MM:SS from the transcript
-- each clip must be self-contained (no context needed)
-- prefer emotionally charged, controversial, quotable, or surprising moments
-- make sure start/end times don't cut mid-sentence
-- return ONLY the JSON array`;
-
-  let fullText = '';
-  await sample(prompt, {
-    modelTier: 'default',
-    cache: false,
-    onText: ({ text }) => { fullText = text; }
-  });
-
-  // Parse
-  const cleaned = fullText.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
-  const match = cleaned.match(/\[[\s\S]*\]/);
-  if (!match) throw new Error('Claude returned unexpected output. Try regenerating.');
-  return JSON.parse(match[0]);
-}
-
-// ── CUT CLIPS ──
-async function cutClips(videoPath, clips) {
-  const payload = {
-    video_path: videoPath,
-    clips: clips,
-    aspect_ratio: selectedRatio,
-    add_captions: false
-  };
-
-  const r = await fetch(getBackendUrl() + '/cut', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify(payload)
-  });
-
-  if (!r.ok) {
-    const txt = await r.text();
-    throw new Error('Backend /cut failed: ' + txt);
-  }
-
-  const d = await r.json();
-  return d.clips.filter(c => !c.error);
-}
-
-// ── RENDER CLIPS ──
 function renderClips(clips) {
-  document.getElementById('clipCountLabel').textContent = clips.length + ' clips ready';
-  const isWide = selectedRatio === '16:9';
-  const isSq = selectedRatio === '1:1';
-  const vidClass = isWide ? 'clip-video wide' : isSq ? 'clip-video sq' : 'clip-video';
-
-  document.getElementById('clipsGrid').innerHTML = clips.map((c, i) => `
+  const backend = getBackend();
+  document.getElementById('clipsGrid').innerHTML = clips.map(c => `
     <div class="clip-card">
-      <video class="${vidClass}" src="${c.url}" controls preload="metadata" playsinline></video>
+      <video class="clip-video" src="${backend + c.url}" controls playsinline></video>
       <div class="clip-info">
-        <div class="viral-badge">🔥 ${c.viral_score || '—'}</div>
-        <div class="clip-title">${c.title}</div>
-        <div class="clip-meta">
-          <span>${c.timestamp_start} → ${c.timestamp_end}</span>
-          <span>${c.size_mb} MB</span>
-        </div>
-        <div class="clip-acts">
-          <a class="cbtn" href="${c.url}" target="_blank">▶ Preview</a>
-          <a class="cbtn cbtn-dl" href="${c.url}" download="${c.filename || 'clip_'+i+'.mp4'}">⬇ Download</a>
-        </div>
+        <div style="font-weight:700">${c.title}</div>
+        <div style="font-size:12px;color:var(--text-2);margin-bottom:6px">${c.size_mb} MB</div>
+        <a class="cbtn" href="${backend + c.url}" download="${c.filename}">⬇ Download Clip</a>
       </div>
     </div>
   `).join('');
-
   document.getElementById('clipsSection').style.display = 'block';
-  document.getElementById('clipsSection').scrollIntoView({behavior:'smooth'});
-}
-
-// ── DOWNLOAD ALL ──
-function downloadAllClips() {
-  generatedClips.forEach((c, i) => {
-    setTimeout(() => {
-      const a = document.createElement('a');
-      a.href = c.url;
-      a.download = c.filename || `clip_${i+1}.mp4`;
-      a.click();
-    }, i * 800);
-  });
-}
-
-// ── DOWNLOAD BACKEND ZIP ──
-function downloadBackend() {
-  alert('Download the backend code from the ZIP file that was provided alongside this app (clipforge-backend.zip). Follow the README inside to deploy on Railway in ~20 minutes.');
-}
-
-// ── ERROR ──
-function showErr(msg) {
-  document.getElementById('errBox').style.display = 'flex';
-  document.getElementById('errMsg').textContent = msg;
-}
-function hideErr() {
-  document.getElementById('errBox').style.display = 'none';
+  document.getElementById('clipsSection').scrollIntoView({ behavior: 'smooth' });
 }
 </script>
 </body>
 </html>
-HTMLEOF
-echo "Done"

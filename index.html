@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClipForge Pro — 8 Caption Styles</title>
+<title>ClipForge Pro AI — Auto Whisper</title>
 <style>
 :root{--bg:#08080f;--bg-card:#111118;--bg-panel:#16161f;--border:rgba(255,255,255,0.08);--text:#ede9ff;--text-2:#9490b8;--accent:#825aff;--accent-s:rgba(130,90,255,0.15);--green:#22c55e;--green-s:rgba(34,197,94,0.12);--r:10px}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -21,24 +21,22 @@ input:focus,textarea:focus{border-color:var(--accent)}
 .tab-btn{flex:1;padding:9px;border-radius:6px;background:var(--bg-panel);color:var(--text-2);border:1px solid var(--border);font-weight:600;font-size:12px;cursor:pointer;text-align:center}
 .tab-btn.active{border-color:var(--accent);background:var(--accent-s);color:var(--accent)}
 
-/* 8 CAPTION TEMPLATES GRID */
 .caption-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
 .cap-card{border:2px solid var(--border);border-radius:8px;padding:10px;cursor:pointer;text-align:center;background:var(--bg-panel);transition:0.18s}
 .cap-card:hover{border-color:rgba(130,90,255,0.4)}
 .cap-card.active{border-color:var(--accent);background:var(--accent-s)}
 .cap-demo{height:42px;display:flex;align-items:center;justify-content:center;font-weight:900;border-radius:4px;margin-bottom:6px;background:#000;letter-spacing:.5px}
 
-/* STYLES PREVIEW */
-.demo-hormozi{color:#ffeb3b;text-shadow:-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;font-size:14px}
-.demo-mrbeast{color:#ff3333;text-shadow:-2px -2px 0 #ffe600, 2px -2px 0 #ffe600, -2px 2px 0 #ffe600, 2px 2px 0 #ffe600;font-size:14px}
+.demo-hormozi{color:#ffeb3b;text-shadow:-2px -2px 0 #000, 2px -2px 0 #000;font-size:14px}
+.demo-mrbeast{color:#ff3333;text-shadow:-2px -2px 0 #ffe600, 2px -2px 0 #ffe600;font-size:14px}
 .demo-neon{color:#00ff66;text-shadow:0 0 10px rgba(0,255,102,0.9);font-size:14px}
-.demo-blue{color:#00e5ff;text-shadow:-2px -2px 0 #000, 2px -2px 0 #000;font-size:14px}
+.demo-blue{color:#00e5ff;text-shadow:-2px -2px 0 #000;font-size:14px}
 .demo-box{background:#fff;color:#000;padding:2px 8px;border-radius:3px;font-size:13px}
-.demo-pink{color:#ff1493;text-shadow:-2px -2px 0 #000, 2px -2px 0 #000;font-size:14px}
-.demo-gold{color:#ffd700;text-shadow:-2px -2px 0 #000, 2px -2px 0 #000;font-size:14px}
-.demo-minimal{color:#fff;font-size:13px;letter-spacing:1px}
+.demo-pink{color:#ff1493;text-shadow:-2px -2px 0 #000;font-size:14px}
+.demo-gold{color:#ffd700;text-shadow:-2px -2px 0 #000;font-size:14px}
+.demo-minimal{color:#fff;font-size:13px}
 
-.btn-big{width:100%;height:46px;border-radius:var(--r);background:linear-gradient(135deg,var(--accent),#a855f7);border:none;color:#fff;font-size:15px;font-weight:700;cursor:pointer}
+.btn-big{width:100%;height:48px;border-radius:var(--r);background:linear-gradient(135deg,var(--accent),#a855f7);border:none;color:#fff;font-size:15px;font-weight:700;cursor:pointer}
 .btn-big:disabled{opacity:.4;cursor:not-allowed}
 .clips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:14px}
 .clip-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
@@ -50,7 +48,7 @@ input:focus,textarea:focus{border-color:var(--accent)}
 <body>
 
 <nav>
-  <div class="logo">✂ ClipForge <span style="font-size:11px;color:var(--accent)">Templates Pro</span></div>
+  <div class="logo">✂ ClipForge <span style="font-size:11px;color:var(--accent)">Auto AI (Whisper)</span></div>
   <div id="connStatus" style="font-size:12px;color:var(--text-2)">● Not connected</div>
 </nav>
 
@@ -66,13 +64,14 @@ input:focus,textarea:focus{border-color:var(--accent)}
 
   <!-- 2. VIDEO -->
   <div class="card">
-    <div class="card-title"><div class="step" id="step2">2</div> Video Source</div>
+    <div class="card-title"><div class="step" id="step2">2</div> Video Source (1080p HD)</div>
     <div class="tab-row">
-      <div class="tab-btn active" id="tabYt" onclick="setTab('yt')">YouTube Link (1080p)</div>
-      <div class="tab-btn" id="tabUp" onclick="setTab('up')">Upload Video</div>
+      <div class="tab-btn active" id="tabYt" onclick="setTab('yt')">YouTube Link (Auto Transcript)</div>
+      <div class="tab-btn" id="tabUp" onclick="setTab('up')">Upload Video (Auto Whisper AI)</div>
     </div>
     <div id="ytBox">
-      <input type="url" id="ytUrl" placeholder="Paste YouTube link here..." />
+      <input type="url" id="ytUrl" placeholder="Paste YouTube video link here..." />
+      <div style="font-size:11px;color:var(--text-2);margin-top:6px">✨ ٹرانسکرپٹ ڈالنے کی ضرورت نہیں ہے، سسٹم خود آڈیو سے بنا لے گا۔</div>
     </div>
     <div id="upBox" style="display:none">
       <input type="file" id="videoFile" accept="video/*" />
@@ -81,57 +80,26 @@ input:focus,textarea:focus{border-color:var(--accent)}
 
   <!-- 3. CHOOSE 8 CAPTION STYLES -->
   <div class="card">
-    <div class="card-title"><div class="step">3</div> Choose Caption Style (8 Pro Styles)</div>
+    <div class="card-title"><div class="step">3</div> Choose Caption Style</div>
     <div class="caption-grid">
-      <div class="cap-card active" onclick="pickCaption(this, 'hormozi')">
-        <div class="cap-demo demo-hormozi">HORMOZI</div>
-        <div style="font-size:11px;font-weight:600">Viral Yellow</div>
-      </div>
-      <div class="cap-card" onclick="pickCaption(this, 'mrbeast')">
-        <div class="cap-demo demo-mrbeast">MR BEAST</div>
-        <div style="font-size:11px;font-weight:600">Red & Yellow</div>
-      </div>
-      <div class="cap-card" onclick="pickCaption(this, 'neon')">
-        <div class="cap-demo demo-neon">TIKTOK NEON</div>
-        <div style="font-size:11px;font-weight:600">Cyber Green</div>
-      </div>
-      <div class="cap-card" onclick="pickCaption(this, 'blue')">
-        <div class="cap-demo demo-blue">TECH BLUE</div>
-        <div style="font-size:11px;font-weight:600">Sky Blue</div>
-      </div>
-      <div class="cap-card" onclick="pickCaption(this, 'box')">
-        <div class="cap-demo"><span class="demo-box">BLACK BOX</span></div>
-        <div style="font-size:11px;font-weight:600">CapCut Box</div>
-      </div>
-      <div class="cap-card" onclick="pickCaption(this, 'pink')">
-        <div class="cap-demo demo-pink">HOT PINK</div>
-        <div style="font-size:11px;font-weight:600">Magenta Glow</div>
-      </div>
-      <div class="cap-card" onclick="pickCaption(this, 'gold')">
-        <div class="cap-demo demo-gold">LUXURY GOLD</div>
-        <div style="font-size:11px;font-weight:600">Golden Luxury</div>
-      </div>
-      <div class="cap-card" onclick="pickCaption(this, 'minimal')">
-        <div class="cap-demo demo-minimal">MINIMALIST</div>
-        <div style="font-size:11px;font-weight:600">Clean Podcast</div>
-      </div>
+      <div class="cap-card active" onclick="pickCaption(this, 'hormozi')"><div class="cap-demo demo-hormozi">HORMOZI</div><div style="font-size:11px;font-weight:600">Viral Yellow</div></div>
+      <div class="cap-card" onclick="pickCaption(this, 'mrbeast')"><div class="cap-demo demo-mrbeast">MR BEAST</div><div style="font-size:11px;font-weight:600">Red & Yellow</div></div>
+      <div class="cap-card" onclick="pickCaption(this, 'neon')"><div class="cap-demo demo-neon">TIKTOK NEON</div><div style="font-size:11px;font-weight:600">Cyber Green</div></div>
+      <div class="cap-card" onclick="pickCaption(this, 'blue')"><div class="cap-demo demo-blue">TECH BLUE</div><div style="font-size:11px;font-weight:600">Sky Blue</div></div>
+      <div class="cap-card" onclick="pickCaption(this, 'box')"><div class="cap-demo"><span class="demo-box">BLACK BOX</span></div><div style="font-size:11px;font-weight:600">CapCut Box</div></div>
+      <div class="cap-card" onclick="pickCaption(this, 'pink')"><div class="cap-demo demo-pink">HOT PINK</div><div style="font-size:11px;font-weight:600">Magenta Glow</div></div>
+      <div class="cap-card" onclick="pickCaption(this, 'gold')"><div class="cap-demo demo-gold">LUXURY GOLD</div><div style="font-size:11px;font-weight:600">Golden Luxury</div></div>
+      <div class="cap-card" onclick="pickCaption(this, 'minimal')"><div class="cap-demo demo-minimal">MINIMALIST</div><div style="font-size:11px;font-weight:600">Clean White</div></div>
     </div>
   </div>
 
-  <!-- 4. TRANSCRIPT -->
-  <div class="card">
-    <div class="card-title"><div class="step">4</div> Transcript (with Timestamps)</div>
-    <textarea id="transcript" rows="5" placeholder="Paste your transcript with timestamps [01:15] ..."></textarea>
-  </div>
-
-  <button class="btn-big" id="runBtn" onclick="processClips()">✦ Generate 1080p Clips with Selected Style</button>
+  <button class="btn-big" id="runBtn" onclick="processClips()">✦ Auto AI: Listen, Transcribe & Cut Clips</button>
 
   <div id="logBox" style="display:none" class="card">
-    <div class="card-title">Status</div>
+    <div class="card-title">AI Processing Status</div>
     <div id="logMsg" style="font-family:monospace;font-size:12px;color:var(--text-2)"></div>
   </div>
 
-  <!-- CLIPS RESULT -->
   <div id="clipsSection" style="display:none">
     <div style="font-size:16px;font-weight:700">Finished Clips with Captions</div>
     <div class="clips-grid" id="clipsGrid"></div>
@@ -176,34 +144,10 @@ function pickCaption(el, style) {
   selectedCaption = style;
 }
 
-function parseTranscript(text) {
-  const timeRegex = /\[?(\d{1,2}:\d{2}(?::\d{2})?)\]?/g;
-  let matches = [];
-  let match;
-  while ((match = timeRegex.exec(text)) !== null) {
-    matches.push(match[1]);
-  }
-  let clips = [];
-  for (let i = 0; i < matches.length && clips.length < 5; i += 2) {
-    clips.push({
-      timestamp_start: matches[i],
-      timestamp_end: matches[i+1] || matches[i],
-      duration_seconds: 35,
-      title: `Clip #${clips.length + 1}`,
-      caption_text: "THIS MOMENT IS ABSOLUTELY INCREDIBLE WATCH THIS"
-    });
-  }
-  if (clips.length === 0) {
-    clips = [{ timestamp_start: "00:15", timestamp_end: "00:45", duration_seconds: 30, title: "Moment #1", caption_text: "AMAZING VIRAL MOMENT HAPPENING RIGHT HERE" }];
-  }
-  return clips;
-}
-
 async function processClips() {
-  if(!backendOk) return alert('Please connect backend in Step 1 first.');
+  if(!backendOk) return alert('Connect backend first.');
   const ytUrl = document.getElementById('ytUrl').value.trim();
   const file = document.getElementById('videoFile').files[0];
-  const transcript = document.getElementById('transcript').value.trim();
 
   document.getElementById('logBox').style.display = 'block';
   document.getElementById('runBtn').disabled = true;
@@ -213,7 +157,7 @@ async function processClips() {
   try {
     if (currentTab === 'yt') {
       if(!ytUrl) throw new Error('Enter YouTube URL');
-      log.textContent = 'Downloading YouTube video in 1080p HD…';
+      log.textContent = '1/3 Downloading 1080p Video & Captions…';
       const r = await fetch(getBackend() + '/download-yt', {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
@@ -224,7 +168,7 @@ async function processClips() {
       videoPath = d.path;
     } else {
       if(!file) throw new Error('Select a video file');
-      log.textContent = 'Uploading file…';
+      log.textContent = '1/3 Uploading file to server…';
       const fd = new FormData();
       fd.append('file', file);
       const r = await fetch(getBackend() + '/upload', { method: 'POST', body: fd });
@@ -232,21 +176,20 @@ async function processClips() {
       videoPath = d.path;
     }
 
-    log.textContent = `Applying ${selectedCaption.toUpperCase()} captions and rendering 9:16 clips…`;
-    const clips = parseTranscript(transcript);
-
+    log.textContent = '2/3 Whisper AI is listening to the video audio and transcribing automatically…';
     const cutRes = await fetch(getBackend() + '/cut', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
         video_path: videoPath,
-        clips: clips,
+        auto_ai: true,
+        caption_style: selectedCaption,
         aspect_ratio: '9:16',
-        caption_style: selectedCaption
+        clips_count: 3
       })
     });
     const cutData = await cutRes.json();
-    log.textContent = 'Completed! Your clips are ready below.';
+    log.textContent = '3/3 All clips cut with selected captions and ready! ✓';
 
     renderClips(cutData.clips);
   } catch(e) {
